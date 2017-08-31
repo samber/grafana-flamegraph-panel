@@ -1,0 +1,33 @@
+{
+  "type": "panel",
+  "name": "Flamegraph",
+  "id": "grafana-flamegraph-panel",
+
+  "info": {
+    "description": "Flamegraph panel for grafana",
+    "author": {
+      "name": "Samber",
+      "url": "http://samuel-berthe.fr"
+    },
+    "keywords": ["flamegraph", "panel"],
+    "logos": {
+      "small": "src/img/flamegraph_panel_logo.svg",
+      "large": "src/img/flamegraph_panel_logo.svg"
+    },
+    "links": [
+      {"name": "Project site", "url": ""},
+      {"name": "MIT License", "url": ""}
+    ],
+    "screenshots": [
+      {"name": "Showcase", "path": "src/img/screenshot-showcase.png"},
+      {"name": "Options", "path": "src/img/screenshot-flamegraph-options.png"}
+    ],
+    "version": "0.1.0",
+    "updated": "2017-08-24"
+  },
+
+  "dependencies": {
+    "grafanaVersion": "3.x.x",
+    "plugins": [ ]
+  }
+}

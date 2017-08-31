@@ -1,0 +1,59 @@
+
+<div class="editor-row">
+	<div class="section gf-form-group">
+		<h5 class="section-heading">Flame Graph options</h5>
+
+		<div class="gf-form-inline">
+			<div class="gf-form">
+				<label class="gf-form-label">Signature column name</label>
+				<input type="text" class="gf-form-input"
+					placeholder="auto" data-placement="right"
+					bs-tooltip="'Override default column name for signatures in series'"
+					ng-model="ctrl.panel.mapping.signatureFieldName"
+					ng-change="ctrl.render()"
+					ng-model-onblur />
+				<tip>A signature is the path between the root node of an oriented graph and node (even if it's not an exit-nodes)</tip>
+			</div>
+		</div>
+
+		<div class="gf-form-inline">
+			<div class="gf-form">
+				<label class="gf-form-label">Separator character</label>
+				<input type="text" class="gf-form-input"
+					placeholder="auto" data-placement="right"
+					bs-tooltip="'Override default node name delimiter in signature of each series'"
+					ng-model="ctrl.panel.mapping.signatureSeparator"
+					ng-change="ctrl.render()"
+					ng-model-onblur />
+				<tip>Signatures are exported serialized, with a character delimiting each node of the path.</tip>
+			</div>
+		</div>
+
+		<div class="gf-form-inline">
+			<div class="gf-form ">
+				<label class="gf-form-label">Color function</label>
+				<select class="gf-form-input" ng-model="ctrl.panel.colorFunction" ng-options="f for f in ctrl.panel.availableColorFunctions" ng-change="ctrl.render()"></select>
+			</div>
+		</div>
+
+		<div class="gf-form-inline" ng-if="ctrl.panel.colorFunction == 'single'">
+			<div class="gf-form">
+				<label class="gf-form-label">Color</label>
+				<spectrum-picker ng-model="ctrl.panel.colorSingle" ng-change="ctrl.render()" ></spectrum-picker>
+			</div>
+		</div>
+		
+		<div class="gf-form-inline" ng-if="ctrl.panel.colorFunction == 'module'">
+			<div class="gf-form">
+				<label class="gf-form-label">Column name</label>
+				<input type="text" class="gf-form-input"
+					placeholder="auto" data-placement="right"
+					bs-tooltip="'Aggregate frames by matching module name'"
+					ng-model="ctrl.panel.mapping.colorModuleColumnName"
+					ng-change="ctrl.render()"
+					ng-model-onblur />
+				<tip>Frames with the same value share the same color. Warning: series must have a label.</tip>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,24 @@
+version: "2"
+
+services:
+  prometheus:
+    image: "prom/prometheus:v1.7.1"
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus:/data
+    command: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.local.path=/data/prometheus"]
+
+  grafana:
+    image: grafana/grafana:4.4.3
+    depends_on:
+      - prometheus
+    ports:
+      - 3000:3000
+    volumes:
+      - ../dist:/var/lib/grafana/plugins/grafana-flamegraph-panel
+      - ./grafana.db:/var/lib/grafana/grafana.db
+
+volumes:
+    prometheus: {}

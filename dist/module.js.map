@@ -1,0 +1,1 @@
+{"version":3,"sources":["../src/module.js"],"names":["FlameGraphCtrl"],"mappings":";;;;;;;;AAAQA,oB,qBAAAA,c;;;2BAGNA,c","file":"module.js","sourcesContent":["import {FlameGraphCtrl} from './flame_graph_ctrl';\n\nexport {\n  FlameGraphCtrl as PanelCtrl\n};\n"]}
