@@ -5,6 +5,8 @@ services:
     image: "prom/prometheus:v1.7.1"
     ports:
       - "9090:9090"
+    depends_on:
+      - exporter
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus:/data
@@ -19,6 +21,13 @@ services:
     volumes:
       - ../dist:/var/lib/grafana/plugins/grafana-flamegraph-panel
       - ./grafana.db:/var/lib/grafana/grafana.db
+
+  exporter:
+    image: samber/node-promfile-demo
+    ports:
+      - 8080:8080
+    expose:
+      - 9142
 
 volumes:
     prometheus: {}
