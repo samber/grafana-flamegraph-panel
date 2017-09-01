@@ -10,7 +10,7 @@ services:
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus:/data
-    command: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.local.path=/data/prometheus"]
+    command: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.local.path=/data/prometheus", "--storage.local.retention=1h"]
 
   grafana:
     image: grafana/grafana:4.4.3
