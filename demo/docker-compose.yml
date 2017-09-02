@@ -11,6 +11,7 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus:/data
     command: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.local.path=/data/prometheus", "--storage.local.retention=1h"]
+    restart: unless-stopped
 
   grafana:
     image: grafana/grafana:4.4.3
@@ -21,6 +22,7 @@ services:
     volumes:
       - ../dist:/var/lib/grafana/plugins/grafana-flamegraph-panel
       - ./grafana.db:/var/lib/grafana/grafana.db
+    restart: unless-stopped
 
   exporter:
     image: samber/node-promfile-demo
@@ -28,6 +30,7 @@ services:
       - 8080:8080
     expose:
       - 9142
+    restart: unless-stopped
 
 volumes:
     prometheus: {}
