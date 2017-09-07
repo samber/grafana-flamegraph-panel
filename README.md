@@ -1,6 +1,12 @@
 # [WIP] Grafana Flamegraph Panel
 
-## Demo with Prometheus
+## Building flame graphs
+
+[![Flame Graph Example](https://media.giphy.com/media/l41JMjBaxrZw1bqpi/giphy.gif)](http://spiermar.github.io/d3-flame-graph/)
+
+Please read [Brendan Gregg's post](http://www.brendangregg.com/flamegraphs.html)
+
+## Demo
 
 Grafana demo: http://163.172.88.81:3000
 - login: admin
