@@ -8,7 +8,7 @@ Please read [Brendan Gregg's post](http://www.brendangregg.com/flamegraphs.html)
 
 ## Demo
 
-Grafana demo: http://163.172.88.81:3000
+Grafana demo: [http://163.172.88.81:3000](http://163.172.88.81:3000)
 - login: admin
 - password: admin
 
@@ -32,3 +32,7 @@ Metrics are collected every 30 secondes, plz keep waiting if `pow()` is not show
 $ npm install -g promfiler
 $ promfiler app.js
 ```
+
+## Credits
+
+This Grafana panel is based on the great library [d3-flamegraph](https://github.com/spiermar/d3-flame-graph), wrote by Spiermar. :clap: :clap:
