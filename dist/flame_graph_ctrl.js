@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['app/plugins/sdk', 'app/core/time_series2', 'app/core/utils/kbn', 'app/core/config', 'lodash', 'jquery', './d3_bundle', './sample', './external/d3.flameGraph.css!', './css/flame-graph-panel.css!'], function (_export, _context) {
+System.register(['app/plugins/sdk', 'app/core/time_series2', 'app/core/utils/kbn', 'app/core/config', 'lodash', 'jquery', './d3_bundle', './sample', './sample2', './external/d3.flameGraph.css!', './css/flame-graph-panel.css!'], function (_export, _context) {
   "use strict";
 
-  var MetricsPanelCtrl, TimeSeries, kbn, config, _, $, d3, sample, _createClass, panelDefaults, FlameGraphCtrl;
+  var MetricsPanelCtrl, TimeSeries, kbn, config, _, $, d3, sample, sample2, _createClass, panelDefaults, FlameGraphCtrl;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -52,6 +52,8 @@ System.register(['app/plugins/sdk', 'app/core/time_series2', 'app/core/utils/kbn
       d3 = _d3_bundle;
     }, function (_sample) {
       sample = _sample.default;
+    }, function (_sample2) {
+      sample2 = _sample2.default;
     }, function (_externalD3FlameGraphCss) {}, function (_cssFlameGraphPanelCss) {}],
     execute: function () {
       _createClass = function () {
@@ -221,7 +223,9 @@ System.register(['app/plugins/sdk', 'app/core/time_series2', 'app/core/utils/kbn
             return Object.keys(data).reduce(function (acc, current) {
               // in case of data based on time (round)
               if (data[current] == 0) data[current] = 1;
-              _this2.setValueRec(acc, current.split(_this2.panel.mapping.signatureSeparator), data[current] == 0 ? 1 : data[current]);
+              _this2.setValueRec(acc, current.split(_this2.panel.mapping.signatureSeparator), data[current]
+              // data[current] == 0 ? 1 : data[current]
+              );
               return acc;
             }.bind(this), { name: 'root', value: 1, children: [] });
           }
@@ -280,7 +284,9 @@ System.register(['app/plugins/sdk', 'app/core/time_series2', 'app/core/utils/kbn
               if (!ctrl.tree) {
                 return;
               }
-              ctrl.tree = sample;
+              // console.log(JSON.stringify(ctrl.tree));
+
+              // ctrl.tree = sample2;
 
               // console.info(ctrl.tree);
               // ctrl.panel.height = 900;
@@ -288,6 +294,10 @@ System.register(['app/plugins/sdk', 'app/core/time_series2', 'app/core/utils/kbn
               var flameGraph = d3.flameGraph(d3).width(ctrl.panelWidth).cellHeight(18).transitionDuration(750).transitionEase(d3.easeCubic).sort(true).title("");
 
               d3.select("#chart").datum(ctrl.tree).call(flameGraph);
+
+              setTimeout(function () {
+                flameGraph.resetZoom();
+              }, 5000);
             }
 
             this.events.on('render', function () {

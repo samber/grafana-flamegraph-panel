@@ -306,7 +306,11 @@
         partition(root);
 
         var kx = w / (root.x1 - root.x0);
-        function width(d) { return (d.x1 - d.x0) * kx; }
+        function width(d) { 
+          // if (d.data.name == "freeParser" || d.data.name == "exports.FreeList.free" || d.data.name == "push" && d.x0 == 0)
+          //   console.log(d.data.name, d.x1, d.x0, kx);
+          return (d.x1 - d.x0) * kx;
+        }
 
         var descendants = filterNodes(root);
         var g = d3.select(this).select("svg").selectAll("g").data(descendants, function(d) { return d.id; });

@@ -11,6 +11,7 @@ import $ from 'jquery';
 import * as d3 from './d3_bundle';
 
 import sample from './sample';
+import sample2 from './sample2';
 
 import './external/d3.flameGraph.css!';
 import './css/flame-graph-panel.css!';
@@ -155,7 +156,8 @@ class FlameGraphCtrl extends MetricsPanelCtrl {
       this.setValueRec(
         acc,
         current.split(this.panel.mapping.signatureSeparator),
-        data[current] == 0 ? 1 : data[current]
+        data[current]
+        // data[current] == 0 ? 1 : data[current]
       );
       return acc;
     }).bind(this), {name: 'root', value: 1, children: []});
@@ -214,7 +216,9 @@ class FlameGraphCtrl extends MetricsPanelCtrl {
       if (!ctrl.tree) {
         return;
       }
-      ctrl.tree = sample;
+      // console.log(JSON.stringify(ctrl.tree));
+
+      // ctrl.tree = sample2;
 
       // console.info(ctrl.tree);
       // ctrl.panel.height = 900;
@@ -230,6 +234,10 @@ class FlameGraphCtrl extends MetricsPanelCtrl {
       d3.select("#chart")
         .datum(ctrl.tree)
         .call(flameGraph);
+
+      setTimeout(function () {
+        flameGraph.resetZoom();
+      }, 5000);
     }
 
     this.events.on('render', () => {
