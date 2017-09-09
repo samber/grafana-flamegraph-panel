@@ -22,7 +22,7 @@ Metrics are collected every 30 secondes, plz keep waiting if `pow()` is not show
 
 ## Live profiling
 
-### NodeJS
+### Prometheus + NodeJS
 
 [Prometheus exporter: Promfiler](github.com/samber/node-promfiler)
 
