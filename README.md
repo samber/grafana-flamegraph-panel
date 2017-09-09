@@ -8,9 +8,7 @@ Please read [Brendan Gregg's post](http://www.brendangregg.com/flamegraphs.html)
 
 ## Demo
 
-Grafana demo: [http://163.172.88.81:3000](http://163.172.88.81:3000)
-- login: admin
-- password: admin
+**[Grafana live demo](http:////163.172.88.81:3000/dashboard/db/demo-flamegraph?orgId=1)**
 
 To generate metrics on the "demo" service, execute many times:
 
