@@ -22,6 +22,10 @@ services:
     volumes:
       - ../dist:/var/lib/grafana/plugins/grafana-flamegraph-panel
       - ./grafana.db:/var/lib/grafana/grafana.db
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=true
+      - GF_AUTH_ANONYMOUS_ORG_ROLE=Read Only Editor
+      - GF_SECURITY_ADMIN_PASSWORD=secret
     restart: unless-stopped
 
   exporter:
