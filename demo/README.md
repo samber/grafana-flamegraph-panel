@@ -1,14 +1,27 @@
 # Demo
 
+
+## Setup
+
 ```
 $ docker-compose up -d
-$ open localhost:3000
 ```
 
 ## Grafana
 
-Credentials:
-- user: admin
-- pass: admin
+```
+$ open localhost:3000
+```
 
-Dashboard: test-profiler
+Dashboard: demo-flamgraph
+
+## Producing stack traces
+
+```
+$ curl localhost:8080
+$ curl localhost:8080
+$ curl localhost:8080
+$ curl localhost:8080
+$ curl localhost:8080
+...
+```

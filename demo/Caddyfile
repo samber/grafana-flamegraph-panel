@@ -1,0 +1,34 @@
+
+https://grafana.flamgraph.samuel-berthe.fr {
+
+  tls dev@samuel-berthe.fr
+  proxy / localhost:3000
+
+  # websocket
+  header_upstream Connection {>Connection}
+  header_upstream Upgrade {>Upgrade}
+
+  # transparent forwarding
+  header_upstream Host {host}
+  header_upstream X-Real-IP {remote}
+  header_upstream X-Forwarded-For {remote}
+  header_upstream X-Forwarded-Proto {scheme}
+
+}
+
+https://demo.flamgraph.samuel-berthe.fr {
+
+  tls dev@samuel-berthe.fr
+  proxy / localhost:8080
+
+  # websocket
+  header_upstream Connection {>Connection}
+  header_upstream Upgrade {>Upgrade}
+
+  # transparent forwarding
+  header_upstream Host {host}
+  header_upstream X-Real-IP {remote}
+  header_upstream X-Forwarded-For {remote}
+  header_upstream X-Forwarded-Proto {scheme}
+
+}

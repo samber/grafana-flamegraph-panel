@@ -8,12 +8,12 @@ Please read [Brendan Gregg's post](http://www.brendangregg.com/flamegraphs.html)
 
 ## Demo
 
-**[Grafana live demo](http:////163.172.88.81:3000/dashboard/db/demo-flamegraph?orgId=1)**
+**[Grafana live demo](https://grafana.flamgraph.samuel-berthe.fr/dashboard/db/demo-flamegraph?orgId=1)**
 
 To generate metrics on the "demo" service, execute many times:
 
 ```
-$ curl http://163.172.88.81:8080/
+$ curl https://demo.flamgraph.samuel-berthe.fr
 ```
 
 You will see some `pow()` calls in the graph.
