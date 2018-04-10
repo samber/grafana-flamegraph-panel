@@ -8,7 +8,7 @@ Please read [Brendan Gregg's post](http://www.brendangregg.com/flamegraphs.html)
 
 ## Demo
 
-**[Grafana live demo](https://grafana.flamegraph.samuel-berthe.fr/d/000000001/demo-flamegraph?orgId=1)**
+**[Grafana live demo](http://grafana.flamegraph.samuel-berthe.fr/d/000000001/demo-flamegraph?orgId=1)**
 
 To generate metrics on the "demo" service (docker samber/node-promfiler-demo), a cronjob executes requests on API regulary.
 
