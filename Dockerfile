@@ -39,3 +39,4 @@ RUN wget https://github.com/joyent/containerpilot/releases/download/3.7.0/contai
 COPY demo/containerpilot.json /etc/containerpilot.json
 
 CMD /bin/containerpilot -config /etc/containerpilot.json
+ENV HTTP_PORT=4242
