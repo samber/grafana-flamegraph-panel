@@ -1,5 +1,5 @@
 
-https://grafana.flamgraph.samuel-berthe.fr {
+https://grafana.flamegraph.samuel-berthe.fr {
 
   tls dev@samuel-berthe.fr
   proxy / localhost:3000

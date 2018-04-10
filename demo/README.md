@@ -18,10 +18,10 @@ Dashboard: demo-flamgraph
 ## Producing stack traces
 
 ```
-$ curl localhost:8080
-$ curl localhost:8080
-$ curl localhost:8080
-$ curl localhost:8080
-$ curl localhost:8080
+$ curl localhost:8000
+$ curl localhost:8000
+$ curl localhost:8000
+$ curl localhost:8000
+$ curl localhost:8000
 ...
 ```

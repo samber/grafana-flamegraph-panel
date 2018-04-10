@@ -1,0 +1,44 @@
+{
+    consul: "1.2.3.4:8500",
+    logging: {
+        level: "INFO",
+        format: "default",
+        output: "stdout"
+    },
+    jobs: [
+        {
+            name: "grafana",
+            exec: "/grafana.sh",
+            restarts: "unlimited"
+        },
+        {
+            name: "prometheus",
+            exec: "/bin/prometheus --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/data/prometheus --storage.tsdb.retention=1h",
+            restarts: "unlimited"
+        },
+        {
+            name: "node-promfiler-demo",
+            exec: "node-promfiler --sampling-interval=100 /app/app.js",
+            restarts: "999999999",
+            port: 8080,
+            when: {
+                source: "schedule-restart",
+                each: "exitSuccess"
+            },
+            health: {
+                exec: "/usr/bin/curl localhost:8000",
+                interval: 42,
+                ttl: 42,
+                timeout: "5s",
+            },
+        },
+        {
+            name: "schedule-restart",
+            exec: "echo 0",
+            restarts: "unlimited",
+            when: {
+                interval: 900,
+            }
+        }
+    ]
+}

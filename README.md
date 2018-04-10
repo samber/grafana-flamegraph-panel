@@ -8,17 +8,11 @@ Please read [Brendan Gregg's post](http://www.brendangregg.com/flamegraphs.html)
 
 ## Demo
 
-**[Grafana live demo](https://grafana.flamgraph.samuel-berthe.fr/dashboard/db/demo-flamegraph?orgId=1)**
+**[Grafana live demo](https://grafana.flamegraph.samuel-berthe.fr/d/000000001/demo-flamegraph?orgId=1)**
 
-To generate metrics on the "demo" service, execute many times:
-
-```
-$ curl https://demo.flamgraph.samuel-berthe.fr
-```
+To generate metrics on the "demo" service (docker samber/node-promfiler-demo), a cronjob executes requests on API regulary.
 
 You will see some `pow()` calls in the graph.
-
-Metrics are collected every 30 secondes, plz keep waiting if `pow()` is not shown on the flame graph.
 
 ## Live profiling
 

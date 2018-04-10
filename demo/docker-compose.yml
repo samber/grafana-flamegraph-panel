@@ -29,11 +29,13 @@ services:
     restart: unless-stopped
 
   exporter:
-    image: samber/node-promfile-demo
+    image: samber/node-promfiler-demo
     ports:
-      - 127.0.0.1:8080:8080
+      - 127.0.0.1:8000:8000
     expose:
       - 9142
+    environment:
+      - PORT=8000
     restart: unless-stopped
 
 volumes:
