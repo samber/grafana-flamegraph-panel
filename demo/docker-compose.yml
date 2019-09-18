@@ -5,7 +5,7 @@ services:
     image: "prom/prometheus:v1.7.1"
     expose:
       - 9090
-    depends_on:
+    links:
       - exporter
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
@@ -14,28 +14,27 @@ services:
     restart: unless-stopped
 
   grafana:
-    image: grafana/grafana:4.4.3
-    depends_on:
+    image: grafana/grafana:latest
+    links:
       - prometheus
     ports:
-      - 127.0.0.1:3000:3000
+      - 3000:3000
     volumes:
       - ../dist:/var/lib/grafana/plugins/grafana-flamegraph-panel
       - ./grafana.db:/var/lib/grafana/grafana.db
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Read Only Editor
       - GF_SECURITY_ADMIN_PASSWORD=secret
     restart: unless-stopped
 
   exporter:
     image: samber/node-promfiler-demo
     ports:
-      - 127.0.0.1:8000:8000
+      - 8080:8080
     expose:
       - 9142
     environment:
-      - PORT=8000
+      - PORT=8080
     restart: unless-stopped
 
 volumes:

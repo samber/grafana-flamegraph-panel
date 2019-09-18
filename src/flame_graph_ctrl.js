@@ -86,33 +86,45 @@ class FlameGraphCtrl extends MetricsPanelCtrl {
     let panelTitleOffset = 0;
     if (this.panel.title !== "")
       panelTitleOffset = 25;
-    this.panelWidth = this.getPanelWidthBySpan();
+    this.panelWidth = this.getPanelWidth();
     this.panelHeight = this.getPanelHeight() - panelTitleOffset;
     
     this.render();
   }
 
-  getPanelWidthBySpan() {
+  getPanelWidth() {
     const viewPortWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
     // get the pixels of a span
     const pixelsPerSpan = viewPortWidth / 12;
     // multiply num spans by pixelsPerSpan
-    return Math.round(this.panel.span * pixelsPerSpan) - this.panel.panelMargin.left - this.panel.panelMargin.right;
+    if (typeof this.panel.span !== 'undefined') {
+      return Math.round(this.panel.span * pixelsPerSpan) - this.panel.panelMargin.left - this.panel.panelMargin.right;
+    } else if (typeof this.panel.gridPos !== 'undefined') {
+      return Math.round(this.panel.gridPos.w * pixelsPerSpan) - this.panel.panelMargin.left - this.panel.panelMargin.right;
+    }
+    return 640;
   }
 
   getPanelHeight() {
+    const viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    // get the pixels of a span
+    const pixelsPerSpan = viewPortHeight / 8;
     // panel can have a fixed height via options
     let tmpPanelHeight = this.panel.height;
     // if that is blank, try to get it from our row
     if (typeof tmpPanelHeight === 'undefined') {
-      // get from the row instead
-      tmpPanelHeight = this.row.height;
       // default to 250px if that was undefined also
-      if (typeof tmpPanelHeight === 'undefined') {
-        tmpPanelHeight = 250;
+      if (typeof this.row === 'undefined' || typeof this.row.height === 'undefined') {
+        if (typeof this.panel.gridPos !== 'undefined') {
+          tmpPanelHeight = Math.round(this.panel.gridPos.h * pixelsPerSpan);
+        } else {
+          tmpPanelHeight = 250;
+        }
+      } else {
+        // get from the row instead
+        tmpPanelHeight = this.row.height;
       }
-    }
-    else {
+    } else {
       // convert to numeric value
       tmpPanelHeight = tmpPanelHeight.replace("px","");
     }
@@ -218,7 +230,7 @@ class FlameGraphCtrl extends MetricsPanelCtrl {
       }
       // console.log(JSON.stringify(ctrl.tree));
 
-      // ctrl.tree = sample2;
+      //ctrl.tree = sample2;
 
       // console.info(ctrl.tree);
       // ctrl.panel.height = 900;
