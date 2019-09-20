@@ -1,9 +1,9 @@
 'use strict';
 
-System.register(['app/plugins/sdk', 'app/core/time_series2', 'app/core/utils/kbn', 'app/core/config', 'lodash', 'jquery', './d3_bundle', './sample', './sample2', './external/d3.flameGraph.css!', './css/flame-graph-panel.css!'], function (_export, _context) {
+System.register(['app/plugins/sdk', 'lodash', './d3_bundle', './external/d3.flameGraph.css!', './css/flame-graph-panel.css!'], function (_export, _context) {
   "use strict";
 
-  var MetricsPanelCtrl, TimeSeries, kbn, config, _, $, d3, sample, sample2, _createClass, panelDefaults, FlameGraphCtrl;
+  var MetricsPanelCtrl, _, d3, panelDefaults, FlameGraphCtrl;
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -38,42 +38,12 @@ System.register(['app/plugins/sdk', 'app/core/time_series2', 'app/core/utils/kbn
   return {
     setters: [function (_appPluginsSdk) {
       MetricsPanelCtrl = _appPluginsSdk.MetricsPanelCtrl;
-    }, function (_appCoreTime_series) {
-      TimeSeries = _appCoreTime_series.default;
-    }, function (_appCoreUtilsKbn) {
-      kbn = _appCoreUtilsKbn.default;
-    }, function (_appCoreConfig) {
-      config = _appCoreConfig.default;
     }, function (_lodash) {
       _ = _lodash.default;
-    }, function (_jquery) {
-      $ = _jquery.default;
     }, function (_d3_bundle) {
       d3 = _d3_bundle;
-    }, function (_sample) {
-      sample = _sample.default;
-    }, function (_sample2) {
-      sample2 = _sample2.default;
     }, function (_externalD3FlameGraphCss) {}, function (_cssFlameGraphPanelCss) {}],
     execute: function () {
-      _createClass = function () {
-        function defineProperties(target, props) {
-          for (var i = 0; i < props.length; i++) {
-            var descriptor = props[i];
-            descriptor.enumerable = descriptor.enumerable || false;
-            descriptor.configurable = true;
-            if ("value" in descriptor) descriptor.writable = true;
-            Object.defineProperty(target, descriptor.key, descriptor);
-          }
-        }
-
-        return function (Constructor, protoProps, staticProps) {
-          if (protoProps) defineProperties(Constructor.prototype, protoProps);
-          if (staticProps) defineProperties(Constructor, staticProps);
-          return Constructor;
-        };
-      }();
-
       panelDefaults = {
         mapping: {
           signatureFieldName: 'signature',
@@ -100,7 +70,7 @@ System.register(['app/plugins/sdk', 'app/core/time_series2', 'app/core/utils/kbn
         colorSingle: '#C05018'
       };
 
-      _export('MetricsPanelCtrl', _export('FlameGraphCtrl', FlameGraphCtrl = function (_MetricsPanelCtrl) {
+      _export('FlameGraphCtrl', FlameGraphCtrl = function (_MetricsPanelCtrl) {
         _inherits(FlameGraphCtrl, _MetricsPanelCtrl);
 
         function FlameGraphCtrl($scope, $injector) {
@@ -108,108 +78,39 @@ System.register(['app/plugins/sdk', 'app/core/time_series2', 'app/core/utils/kbn
 
           var _this = _possibleConstructorReturn(this, (FlameGraphCtrl.__proto__ || Object.getPrototypeOf(FlameGraphCtrl)).call(this, $scope, $injector));
 
-          _.defaultsDeep(_this.panel, panelDefaults);
-
-          _this.events.on('init-edit-mode', _this.onInitEditMode.bind(_this));
-          _this.events.on('data-received', _this.onDataReceived.bind(_this));
-          _this.events.on('data-error', _this.onDataError.bind(_this));
-          _this.events.on('data-snapshot-load', _this.onDataReceived.bind(_this));
-
-          _this.panelWidth = null;
-          _this.panelHeight = null;
-          return _this;
-        }
-
-        _createClass(FlameGraphCtrl, [{
-          key: 'onInitEditMode',
-          value: function onInitEditMode() {
+          _this.onInitEditMode = function () {
             // determine the path to this plugin
             var panels = grafanaBootData.settings.panels;
-            var thisPanel = panels[this.pluginId];
+            var thisPanel = panels[_this.pluginId];
             var thisPanelPath = thisPanel.baseUrl + '/';
             // add the relative path to the editor
             var editorPath = thisPanelPath + 'editor.html';
 
-            this.addEditorTab('Options', editorPath, 2);
-          }
-        }, {
-          key: 'onDataError',
-          value: function onDataError(err) {
-            this.onDataReceived([]);
-          }
-        }, {
-          key: 'onDataReceived',
-          value: function onDataReceived(dataList) {
-            var data = dataList.map(this.tableHandler.bind(this));
+            _this.addEditorTab('Options', editorPath, 2);
+          };
+
+          _this.onDataError = function (err) {
+            _this.onDataReceived([]);
+          };
+
+          _this.onDataReceived = function (dataList) {
+            var data = dataList.map(_this.tableHandler.bind(_this));
             if (!data || data.length === 0) {
-              // const error = new Error();
-              // error.message = 'No data or malformed series';
-              // error.data = 'FlameGraph Panel expects at least 1 serie with signature column.\n\nResponse:\n' + JSON.stringify(data);
-              // throw error;
               return;
             }
 
-            this.tree = this.setValues(data[0]);
+            _this.tree = _this.setValues(data[0]);
+            _this.render();
+          };
 
-            var panelTitleOffset = 0;
-            if (this.panel.title !== "") panelTitleOffset = 25;
-            this.panelWidth = this.getPanelWidth();
-            this.panelHeight = this.getPanelHeight() - panelTitleOffset;
-
-            this.render();
-          }
-        }, {
-          key: 'getPanelWidth',
-          value: function getPanelWidth() {
-            var viewPortWidth = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-            // get the pixels of a span
-            var pixelsPerSpan = viewPortWidth / 12;
-            // multiply num spans by pixelsPerSpan
-            if (typeof this.panel.span !== 'undefined') {
-              return Math.round(this.panel.span * pixelsPerSpan) - this.panel.panelMargin.left - this.panel.panelMargin.right;
-            } else if (typeof this.panel.gridPos !== 'undefined') {
-              return Math.round(this.panel.gridPos.w * pixelsPerSpan) - this.panel.panelMargin.left - this.panel.panelMargin.right;
-            }
-            return 640;
-          }
-        }, {
-          key: 'getPanelHeight',
-          value: function getPanelHeight() {
-            var viewPortHeight = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-            // get the pixels of a span
-            var pixelsPerSpan = viewPortHeight / 8;
-            // panel can have a fixed height via options
-            var tmpPanelHeight = this.panel.height;
-            // if that is blank, try to get it from our row
-            if (typeof tmpPanelHeight === 'undefined') {
-              // default to 250px if that was undefined also
-              if (typeof this.row === 'undefined' || typeof this.row.height === 'undefined') {
-                if (typeof this.panel.gridPos !== 'undefined') {
-                  tmpPanelHeight = Math.round(this.panel.gridPos.h * pixelsPerSpan);
-                } else {
-                  tmpPanelHeight = 250;
-                }
-              } else {
-                // get from the row instead
-                tmpPanelHeight = this.row.height;
-              }
-            } else {
-              // convert to numeric value
-              tmpPanelHeight = tmpPanelHeight.replace("px", "");
-            }
-            return parseInt(tmpPanelHeight) - this.panel.panelMargin.top - this.panel.panelMargin.bottom;
-          }
-        }, {
-          key: 'getColumnId',
-          value: function getColumnId(data, columnName) {
+          _this.getColumnId = function (data, columnName) {
             for (var i = 0; i < data.columns.length; i++) {
               if (data.columns[i].text === columnName) return i;
             }
             return null;
-          }
-        }, {
-          key: 'setValueRec',
-          value: function setValueRec(tree, signature, value) {
+          };
+
+          _this.setValueRec = function (tree, signature, value) {
             // `signature` is the current node
             if (signature.length == 0) {
               tree.value = value;
@@ -221,36 +122,33 @@ System.register(['app/plugins/sdk', 'app/core/time_series2', 'app/core/utils/kbn
 
             // already existing children
             for (var i = 0; i < tree.children.length; i++) {
-              if (tree.children[i].name === currentPart) return this.setValueRec(tree.children[i], signature, value);
+              if (tree.children[i].name === currentPart) return _this.setValueRec(tree.children[i], signature, value);
             }
 
             // new children
-            tree.children.push(this.setValueRec({ name: currentPart, value: value, children: [] }, signature, value));
+            tree.children.push(_this.setValueRec({ name: currentPart, value: value, children: [] }, signature, value));
             return tree;
-          }
-        }, {
-          key: 'setValues',
-          value: function setValues(data) {
-            var _this2 = this;
+          };
 
-            return Object.keys(data).reduce(function (acc, current) {
+          _this.setValues = function (data) {
+            var tree = Object.keys(data).reduce(function (acc, current) {
               // in case of data based on time (round)
-              if (data[current] == 0) data[current] = 1;
-              _this2.setValueRec(acc, current.split(_this2.panel.mapping.signatureSeparator), data[current]
-              // data[current] == 0 ? 1 : data[current]
-              );
+              if (data[current] == 0) {
+                data[current] = 1;
+              }
+              _this.setValueRec(acc, current.split(_this.panel.mapping.signatureSeparator), data[current]);
               return acc;
-            }.bind(this), { name: 'root', value: 1, children: [] });
-          }
-        }, {
-          key: 'tableHandler',
-          value: function tableHandler(tableData) {
-            var columnIdSignature = this.getColumnId(tableData, this.panel.mapping.signatureFieldName);
-            var columnIdValue = this.getColumnId(tableData, 'Value');
+            }.bind(_this), { name: 'root', value: 1, children: [] });
+            return tree;
+          };
+
+          _this.tableHandler = function (tableData) {
+            var columnIdSignature = _this.getColumnId(tableData, _this.panel.mapping.signatureFieldName);
+            var columnIdValue = _this.getColumnId(tableData, 'Value');
 
             if (columnIdSignature == null || columnIdValue == null) {
               console.error('columns:', tableData.columns);
-              console.error('signature column name:', this.panel.mapping.signatureFieldName);
+              console.error('signature column name:', _this.panel.mapping.signatureFieldName);
               var error = new Error();
               error.message = 'No data or malformed series';
               error.data = 'Metric query returns ' + tableData.rows.length + ' series. FlameGraph Panel expects at least 1 serie with signature column.\n\nResponse:\n' + JSON.stringify(tableData);
@@ -264,70 +162,106 @@ System.register(['app/plugins/sdk', 'app/core/time_series2', 'app/core/utils/kbn
               // acc[signature] = 1;
               return acc;
             }, {});
-          }
-        }, {
-          key: 'colorFunction_random',
-          value: function colorFunction_random() {}
-        }, {
-          key: 'colorFunction_single',
-          value: function colorFunction_single() {}
-        }, {
-          key: 'colorFunction_module',
-          value: function colorFunction_module() {}
-        }, {
-          key: 'colorFunction_scale',
-          value: function colorFunction_scale() {}
-        }, {
-          key: 'setFrameColor',
-          value: function setFrameColor() {
+          };
+
+          _this.colorFunction_random = function () {};
+
+          _this.colorFunction_single = function () {};
+
+          _this.colorFunction_module = function () {};
+
+          _this.colorFunction_scale = function () {};
+
+          _this.setFrameColor = function () {
             var colorFunctions = {
               'random': colorFunction_random,
               'single': colorFunction_single,
               'module': colorFunction_module,
               'scale': colorFunction_scale
             };
-            if (colorFunctions[this.colorFunction]) colorFunctions[this.colorFunction]();
-          }
-        }, {
-          key: 'link',
-          value: function link(scope, elem, attrs, ctrl) {
-            elem = elem.find('.grafana-flamegraph-panel');
+            if (colorFunctions[_this.colorFunction]) colorFunctions[_this.colorFunction]();
+          };
+
+          _this.onRender = function () {
+            if (typeof _this.tree == 'undefined') {
+              return;
+            }
+          };
+
+          _this.onRenderComplete = function (data) {
+            _this.panel.panelWidth = data.panelWidth;
+            _this.renderingCompleted();
+          };
+
+          _this.link = function (scope, elem, attrs, ctrl) {
+            // D3 object
+            var flameGraph = void 0;
+            // jQuery object
+            var $flamegraph = elem.find('.flame-graph-panel');
+            var height = void 0,
+                width = void 0;
+
+            ctrl.events.on('render', function () {
+              render();
+            });
 
             function render() {
-              if (!ctrl.tree) {
+              if (!ctrl.tree || !setFlamegraphSize()) {
                 return;
               }
-              // console.log(JSON.stringify(ctrl.tree));
-
-              //ctrl.tree = sample2;
-
-              // console.info(ctrl.tree);
-              // ctrl.panel.height = 900;
-              // console.log(ctrl.panelWidth);
-              var flameGraph = d3.flameGraph(d3).width(ctrl.panelWidth).cellHeight(18).transitionDuration(750).transitionEase(d3.easeCubic).sort(true).title("");
+              if (!flameGraph) {
+                flameGraph = d3.flameGraph(d3).width(width).height(height).cellHeight(16).transitionDuration(500).transitionEase(d3.easeCubic).sort(true).title("");
+              } else {
+                flameGraph.width(width).height(height);
+              }
 
               d3.select("#chart").datum(ctrl.tree).call(flameGraph);
 
-              setTimeout(function () {
-                flameGraph.resetZoom();
-              }, 5000);
+              flameGraph.resetZoom();
+
+              ctrl.events.emit('render-complete', {
+                "panelWidth": width
+              });
             }
 
-            this.events.on('render', function () {
-              render();
-              ctrl.renderingCompleted();
-            });
-          }
-        }]);
+            function setFlamegraphSize() {
+              try {
+                height = ctrl.height || ctrl.panel.height || ctrl.row.height;
+                if (_.isString(height)) {
+                  height = parseInt(height.replace('px', ''), 10);
+                }
+                $flamegraph.css('height', height + 'px');
+
+                height = Math.floor($flamegraph.height()) - (ctrl.panel.panelMargin.top + ctrl.panel.panelMargin.bottom);
+                width = Math.floor($flamegraph.width()) - (ctrl.panel.panelMargin.left + ctrl.panel.panelMargin.right);
+
+                return true;
+              } catch (e) {
+                // IE throws errors sometimes
+                return false;
+              }
+            }
+          };
+
+          _.defaultsDeep(_this.panel, panelDefaults);
+
+          _this.events.on('data-received', _this.onDataReceived);
+          _this.events.on('data-snapshot-load', _this.onDataReceived);
+          _this.events.on('init-edit-mode', _this.onInitEditMode);
+          _this.events.on('data-error', _this.onDataError);
+
+          _this.events.on('render', _this.onRender);
+          // custom event from link -> render()
+          _this.events.on('render-complete', _this.onRenderComplete);
+          return _this;
+        }
 
         return FlameGraphCtrl;
-      }(MetricsPanelCtrl)));
-
-      FlameGraphCtrl.templateUrl = 'module.html';
+      }(MetricsPanelCtrl));
 
       _export('FlameGraphCtrl', FlameGraphCtrl);
 
-      _export('MetricsPanelCtrl', FlameGraphCtrl);
+      FlameGraphCtrl.templateUrl = 'module.html';
     }
   };
 });

@@ -11,23 +11,23 @@
     },
     "keywords": ["flamegraph", "panel"],
     "logos": {
-      "small": "src/img/flamegraph_panel_logo.svg",
-      "large": "src/img/flamegraph_panel_logo.svg"
+      "small": "img/flamegraph_panel_logo.svg",
+      "large": "img/flamegraph_panel_logo.svg"
     },
     "links": [
       {"name": "Project site", "url": ""},
       {"name": "MIT License", "url": ""}
     ],
     "screenshots": [
-      {"name": "Showcase", "path": "src/img/screenshot-showcase.png"},
-      {"name": "Options", "path": "src/img/screenshot-flamegraph-options.png"}
+      {"name": "Showcase", "path": "img/screenshot-showcase.png"},
+      {"name": "Options", "path": "img/screenshot-flamegraph-options.png"}
     ],
     "version": "0.1.0",
     "updated": "2017-08-24"
   },
 
   "dependencies": {
-    "grafanaVersion": "3.x.x",
+    "grafanaVersion": "6.x.x",
     "plugins": [ ]
   }
 }

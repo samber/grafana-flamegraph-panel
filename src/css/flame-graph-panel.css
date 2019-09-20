@@ -1,9 +1,5 @@
 .flame-graph-panel {
-  display: flex;
-  align-items: center;
-  /* justify-content: center; */
-  flex-direction: column-reverse;
-  overflow-y: auto;
+  position: relative;
 }
 
 .d3-flame-graph .label {

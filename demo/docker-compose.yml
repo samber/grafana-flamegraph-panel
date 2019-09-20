@@ -11,12 +11,13 @@ services:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus:/data
     command: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.local.path=/data/prometheus", "--storage.local.retention=1h"]
-    restart: unless-stopped
+    restart: on-failure
 
   grafana:
     image: grafana/grafana:latest
     links:
       - prometheus
+      - clickhouse
     ports:
       - 3000:3000
     volumes:
@@ -24,8 +25,9 @@ services:
       - ./grafana.db:/var/lib/grafana/grafana.db
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_SECURITY_ADMIN_PASSWORD=secret
-    restart: unless-stopped
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=flant-statusmap-panel,vertamedia-clickhouse-datasource
+    restart: on-failure
 
   exporter:
     image: samber/node-promfiler-demo
@@ -35,7 +37,13 @@ services:
       - 9142
     environment:
       - PORT=8080
-    restart: unless-stopped
+    restart: on-failure
+
+  clickhouse:
+    image: yandex/clickhouse-server:latest
+    volumes:
+      - ./clickhouse-profiling.xml:/etc/clickhouse-server/users.d/clickhouse-profiling.xml
+    restart: on-failure
 
 volumes:
     prometheus: {}

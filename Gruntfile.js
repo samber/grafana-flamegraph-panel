@@ -1,28 +1,26 @@
-module.exports = function(grunt) {
-  
-    require('load-grunt-tasks')(grunt);
-  
-    grunt.loadNpmTasks('grunt-execute');
-    grunt.loadNpmTasks('grunt-contrib-clean');
-    grunt.loadNpmTasks('grunt-package-modules');
-    grunt.loadNpmTasks('grunt-contrib-concat');
-    grunt.loadNpmTasks('grunt-multi-dest');
-    grunt.loadNpmTasks('grunt-babel');
-    grunt.loadNpmTasks('grunt-force-task');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-  
+module.exports = (grunt) => {
+  require('load-grunt-tasks')(grunt);
+
+  grunt.loadNpmTasks('grunt-execute');
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-multi-dest');
+  grunt.loadNpmTasks('grunt-notify');
   
     grunt.initConfig({
       pkg: grunt.file.readJSON('package.json'),
-      clean: ["dist"],
-  
-      jshint: {
-        options: {
-          jshintrc: '.jshintrc',
-          ignores: ['src/**/external/**'],
-        },
-        src: ['Gruntfile.js', 'src/**/*.js'],
+
+      notify: {
+        watch: {
+          options: {
+            message: 'grunt watch Complete',
+            title: 'grafana-flamegraph-panel rebuilded',
+            duration: 2
+          }
+        }
       },
+
+      clean: ["dist"],
 
       copy: {
         main: {
@@ -72,17 +70,20 @@ module.exports = function(grunt) {
       watch: {
         rebuild_all: {
           files: ['src/**/*', 'README.md'],
-          tasks: ['default'],
-          options: {spawn: false}
-        },
+          tasks: ['default', 'notify:watch'],
+          options: {
+            spawn: false,
+            livereload: true
+          }
+        }
       },
   
       babel: {
         options: {
           ignore: ['**/external/*'],
           sourceMap: true,
-          presets:  ["es2015"],
-          plugins: ['transform-es2015-modules-systemjs', "transform-es2015-for-of"],
+          presets: ['es2015'],
+          plugins: ['transform-es2015-modules-systemjs', 'transform-es2015-for-of', 'transform-class-properties', 'transform-object-rest-spread'],
         },
         dist: {
           files: [{
@@ -92,7 +93,7 @@ module.exports = function(grunt) {
             dest: 'dist',
             ext:'.js'
           }]
-        },
+        }
       },
   
     });
@@ -100,8 +101,12 @@ module.exports = function(grunt) {
   
     grunt.registerTask('default', [
             'clean',
-            'jshint',
             'multidest',
             'babel']);
-    grunt.registerTask('release', ['jshint', 'clean', 'multidest', 'packageModules', 'babel']);
+    grunt.registerTask('release', [
+            'clean',
+            'multidest',
+            'packageModules',
+            'babel'
+    ]);
   };
