@@ -1,5 +1,12 @@
 # [WIP] Grafana Flamegraph Panel
 
+## Building plugin
+```
+npm install
+npm dev
+npm build
+```
+
 ## Building flame graphs
 
 [![Flame Graph Example](https://media.giphy.com/media/l41JMjBaxrZw1bqpi/giphy.gif)](http://spiermar.github.io/d3-flame-graph/)

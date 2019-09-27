@@ -23,23 +23,20 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: <<-SHELL
     set -xeuo pipefail
     sysctl net.ipv6.conf.all.forwarding=1
-    apt-get update
-    apt-get install -y apt-transport-https ca-certificates software-properties-common curl
-    # clickhouse
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E0C56BD4
-    # gophers
-    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 136221EE520DDFAF0A905689B9316A7BC7917B12
     # docker
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8D81803C0EBFCD88
-    add-apt-repository "deb http://repo.yandex.ru/clickhouse/deb/stable/ main/"
-    add-apt-repository "deb https://download.docker.com/linux/ubuntu bionic edge"
-    apt-get update
-    apt-get install -y docker-ce
-    apt-get install -y clickhouse-client
+    echo "deb https://download.docker.com/linux/ubuntu bionic edge" > /etc/apt/sources.list.d/docker.lst
+    # nodejs
+    curl -sL https://deb.nodesource.com/setup_10.x | bash -
+		
+    apt-get install -y docker.io
     apt-get install -y python-pip
     apt-get install -y htop ethtool mc
     python -m pip install -U pip
     pip install -U docker-compose
+    cd /vagrant/
+    npm install
+    npm run-script build
     cd /vagrant/demo
     docker-compose down
     docker system prune -f

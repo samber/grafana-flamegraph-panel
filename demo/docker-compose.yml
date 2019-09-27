@@ -43,6 +43,7 @@ services:
     image: yandex/clickhouse-server:latest
     volumes:
       - ./clickhouse-profiling.xml:/etc/clickhouse-server/users.d/clickhouse-profiling.xml
+      - ./clickhouse-statuses.sql:/docker-entrypoint-initdb.d/clickhouse-statuses.sql
     restart: on-failure
 
 volumes:

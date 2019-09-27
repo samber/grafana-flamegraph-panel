@@ -1,10 +1,11 @@
-import {MetricsPanelCtrl} from 'app/plugins/sdk';
+import {MetricsPanelCtrl} from 'grafana/app/plugins/sdk';
 
-import _ from 'lodash';
-import * as d3 from './d3_bundle';
+import _ from 'grafana/lodash';
+import * as d3 from 'grafana/d3';
+import {flamegraph as d3_flameGraph} from "d3-flame-graph";
 
-import './external/d3.flameGraph.css!';
-import './css/flame-graph-panel.css!';
+import './css/d3-flamegraph.css';
+import './css/flame-graph-panel.css';
 
 const panelDefaults = {
   mapping: {
@@ -13,13 +14,13 @@ const panelDefaults = {
   },
 
   panelMargin: {
-    left: 35,
-    right: 35,
+    left: 10,
+    right: 10,
     top: 10,
-    bottom: 20
+    bottom: 10
   },
 
-  panelWidth: null,
+  panelWidth: 500,
   panelHeight: 500,
 
   // fixed: fixed color
@@ -33,19 +34,19 @@ const panelDefaults = {
 };
 
 export class FlameGraphCtrl extends MetricsPanelCtrl {
-  static templateUrl = 'module.html';
+  static templateUrl = 'partials/module.html';
   constructor($scope, $injector) {
     super($scope, $injector);
-    _.defaultsDeep(this.panel, panelDefaults);
+    _.defaults(this.panel, panelDefaults);
 
-    this.events.on('data-received', this.onDataReceived);
-    this.events.on('data-snapshot-load', this.onDataReceived);
-    this.events.on('init-edit-mode', this.onInitEditMode);
-    this.events.on('data-error', this.onDataError);
+    this.events.on('data-received', this.onDataReceived.bind(this));
+    this.events.on('data-snapshot-load', this.onDataReceived.bind(this));
+    this.events.on('init-edit-mode', this.onInitEditMode.bind(this));
+    this.events.on('data-error', this.onDataError.bind(this));
 
-    this.events.on('render', this.onRender);
+    this.events.on('render', this.onRender.bind(this));
     // custom event from link -> render()
-    this.events.on('render-complete', this.onRenderComplete)
+    this.events.on('render-complete', this.onRenderComplete.bind(this))
   }
 
   onInitEditMode = () => {
@@ -54,12 +55,13 @@ export class FlameGraphCtrl extends MetricsPanelCtrl {
     let thisPanel = panels[this.pluginId];
     let thisPanelPath = thisPanel.baseUrl + '/';
     // add the relative path to the editor
-    let editorPath = thisPanelPath + 'editor.html';
+    let editorPath = thisPanelPath + 'partials/editor.html';
 
     this.addEditorTab('Options', editorPath, 2);
   };
 
   onDataError = (err) => {
+    console.log("onDataError", err);
     this.onDataReceived([]);
   };
 
@@ -83,9 +85,10 @@ export class FlameGraphCtrl extends MetricsPanelCtrl {
   };
 
   setValueRec = (tree, signature, value) => {
+    tree.value = tree.value + value;
+
     // `signature` is the current node
-    if (signature.length == 0) {
-      tree.value = value;
+    if (signature.length === 0) {
       return tree;
     }
 
@@ -94,29 +97,30 @@ export class FlameGraphCtrl extends MetricsPanelCtrl {
 
     // already existing children
     for (let i = 0; i < tree.children.length; i++) {
-      if (tree.children[i].name === currentPart)
-        return this.setValueRec(tree.children[i], signature, value);
+      if (tree.children[i].name === currentPart) {
+        tree.children[i] = this.setValueRec(tree.children[i], signature, value);
+        return tree;
+      }
     }
 
     // new children
-    tree.children.push(this.setValueRec({name: currentPart, value: value, children: []}, signature, value));
+    tree.children.push(this.setValueRec({name: currentPart, value: 0, children: []}, signature, value));
     return tree;
   };
 
   setValues = (data) => {
-    let tree = Object.keys(data).reduce(((acc, current) => {
+    return Object.keys(data).reduce(((acc, current) => {
       // in case of data based on time (round)
-      if (data[current] == 0) {
+      if (data[current] === 0) {
         data[current] = 1;
       }
-      this.setValueRec(
+      acc = this.setValueRec(
         acc,
         current.split(this.panel.mapping.signatureSeparator),
         data[current]
       );
       return acc;
-    }).bind(this), {name: 'root', value: 1, children: []});
-    return tree;
+    }).bind(this), {name: 'root', value: 0, children: []});
   };
 
   tableHandler = (tableData) => {
@@ -136,11 +140,9 @@ export class FlameGraphCtrl extends MetricsPanelCtrl {
     return tableData.rows.reduce((acc, current) => {
       const signature = current[columnIdSignature];
       if (acc[signature] == null)
-        acc[signature] = current[columnIdValue];
+        acc[signature] = parseInt(current[columnIdValue], 10);
       else
-        acc[signature] += current[columnIdValue];
-      // DEBUG
-      // acc[signature] = 1;
+        acc[signature] += parseInt(current[columnIdValue], 10);
       return acc;
     }, {});
   };
@@ -164,8 +166,9 @@ export class FlameGraphCtrl extends MetricsPanelCtrl {
       'module': colorFunction_module,
       'scale': colorFunction_scale,
     };
-    if (colorFunctions[this.colorFunction])
+    if (colorFunctions[this.colorFunction]) {
       colorFunctions[this.colorFunction]();
+    }
   };
 
   onRender = () => {
@@ -193,23 +196,23 @@ export class FlameGraphCtrl extends MetricsPanelCtrl {
 
 
     function render() {
-      if (!ctrl.tree || !setFlamegraphSize()) {
+      if (!ctrl.tree || !getFlamegraphSize()) {
         return;
       }
       if (!flameGraph) {
-        flameGraph = d3.flameGraph(d3)
+        flameGraph = d3_flameGraph()
           .width(width)
-          .height(height)
+          // .height(height)
           .cellHeight(16)
           .transitionDuration(500)
           .transitionEase(d3.easeCubic)
-          .sort(true)
+          .sort(false)
           .title("");
       } else {
-        flameGraph.width(width).height(height)
+        flameGraph.width(width);
       }
 
-      d3.select("#chart")
+      d3.select($flamegraph.find("#chart")[0])
         .datum(ctrl.tree)
         .call(flameGraph);
 
@@ -220,23 +223,21 @@ export class FlameGraphCtrl extends MetricsPanelCtrl {
       });
     }
 
-    function setFlamegraphSize() {
+    function getFlamegraphSize() {
       try {
         height = ctrl.height || ctrl.panel.height || ctrl.row.height;
         if (_.isString(height)) {
           height = parseInt(height.replace('px', ''), 10);
         }
-        $flamegraph.css('height', height + 'px');
 
-        height = Math.floor($flamegraph.height()) - (ctrl.panel.panelMargin.top + ctrl.panel.panelMargin.bottom);
-        width = Math.floor($flamegraph.width()) - (ctrl.panel.panelMargin.left + ctrl.panel.panelMargin.right);
-
+        width = Math.floor($flamegraph.width());
+        let chart = $flamegraph.find("#chart");
+        chart.css('height', height + 'px');
         return true;
       } catch (e) { // IE throws errors sometimes
         return false;
       }
     }
-
   };
 }
 
