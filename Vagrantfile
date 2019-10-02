@@ -27,8 +27,11 @@ Vagrant.configure(2) do |config|
     apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8D81803C0EBFCD88
     echo "deb https://download.docker.com/linux/ubuntu bionic edge" > /etc/apt/sources.list.d/docker.lst
     # nodejs
-    curl -sL https://deb.nodesource.com/setup_10.x | bash -
-		
+    curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | apt-key add -
+    echo 'deb https://deb.nodesource.com/node_10.x bionic main' > /etc/apt/sources.list.d/nodesource.list
+    echo 'deb-src https://deb.nodesource.com/node_10.x bionic main' >> /etc/apt/sources.list.d/nodesource.list
+    apt-get update
+	apt-get install -y nodejs
     apt-get install -y docker.io
     apt-get install -y python-pip
     apt-get install -y htop ethtool mc

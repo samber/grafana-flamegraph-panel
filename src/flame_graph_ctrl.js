@@ -202,14 +202,14 @@ export class FlameGraphCtrl extends MetricsPanelCtrl {
       if (!flameGraph) {
         flameGraph = d3_flameGraph()
           .width(width)
-          // .height(height)
           .cellHeight(16)
           .transitionDuration(500)
           .transitionEase(d3.easeCubic)
           .sort(false)
           .title("");
       } else {
-        flameGraph.width(width);
+        let svg = $flamegraph.find("#chart svg")[0];
+        svg.setAttribute("width", width);
       }
 
       d3.select($flamegraph.find("#chart")[0])
@@ -233,6 +233,7 @@ export class FlameGraphCtrl extends MetricsPanelCtrl {
         width = Math.floor($flamegraph.width());
         let chart = $flamegraph.find("#chart");
         chart.css('height', height + 'px');
+        chart.css('width', width + 'px');
         return true;
       } catch (e) { // IE throws errors sometimes
         return false;

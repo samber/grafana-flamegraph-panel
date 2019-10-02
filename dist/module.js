@@ -6751,10 +6751,10 @@ function (_MetricsPanelCtrl) {
         }
 
         if (!flameGraph) {
-          flameGraph = (0, _d3FlameGraph.flamegraph)().width(width) // .height(height)
-          .cellHeight(16).transitionDuration(500).transitionEase(d3.easeCubic).sort(false).title("");
+          flameGraph = (0, _d3FlameGraph.flamegraph)().width(width).cellHeight(16).transitionDuration(500).transitionEase(d3.easeCubic).sort(false).title("");
         } else {
-          flameGraph.width(width);
+          var svg = $flamegraph.find("#chart svg")[0];
+          svg.setAttribute("width", width);
         }
 
         d3.select($flamegraph.find("#chart")[0]).datum(ctrl.tree).call(flameGraph);
@@ -6775,6 +6775,7 @@ function (_MetricsPanelCtrl) {
           width = Math.floor($flamegraph.width());
           var chart = $flamegraph.find("#chart");
           chart.css('height', height + 'px');
+          chart.css('width', width + 'px');
           return true;
         } catch (e) {
           // IE throws errors sometimes
