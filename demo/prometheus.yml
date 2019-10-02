@@ -7,4 +7,4 @@ scrape_configs:
     scrape_interval: 30s
     scrape_timeout: 3s
     static_configs:
-     - targets: ['localhost:9142']
+     - targets: ['exporter:9142']

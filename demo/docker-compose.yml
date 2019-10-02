@@ -5,38 +5,46 @@ services:
     image: "prom/prometheus:v1.7.1"
     expose:
       - 9090
-    depends_on:
+    links:
       - exporter
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus:/data
     command: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.local.path=/data/prometheus", "--storage.local.retention=1h"]
-    restart: unless-stopped
+    restart: on-failure
 
   grafana:
-    image: grafana/grafana:4.4.3
-    depends_on:
+    image: grafana/grafana:latest
+    links:
       - prometheus
+      - clickhouse
     ports:
-      - 127.0.0.1:3000:3000
+      - 3000:3000
     volumes:
       - ../dist:/var/lib/grafana/plugins/grafana-flamegraph-panel
       - ./grafana.db:/var/lib/grafana/grafana.db
     environment:
       - GF_AUTH_ANONYMOUS_ENABLED=true
-      - GF_AUTH_ANONYMOUS_ORG_ROLE=Read Only Editor
-      - GF_SECURITY_ADMIN_PASSWORD=secret
-    restart: unless-stopped
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_INSTALL_PLUGINS=flant-statusmap-panel,vertamedia-clickhouse-datasource
+    restart: on-failure
 
   exporter:
     image: samber/node-promfiler-demo
     ports:
-      - 127.0.0.1:8000:8000
+      - 8080:8080
     expose:
       - 9142
     environment:
-      - PORT=8000
-    restart: unless-stopped
+      - PORT=8080
+    restart: on-failure
+
+  clickhouse:
+    image: yandex/clickhouse-server:latest
+    volumes:
+      - ./clickhouse-profiling.xml:/etc/clickhouse-server/users.d/clickhouse-profiling.xml
+      - ./clickhouse-statuses.sql:/docker-entrypoint-initdb.d/clickhouse-statuses.sql
+    restart: on-failure
 
 volumes:
     prometheus: {}

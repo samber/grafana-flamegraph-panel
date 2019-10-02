@@ -1,0 +1,299 @@
+﻿{
+  "name": "root",
+  "value": 1,
+  "children": [
+    {
+      "name": "clone#/lib/x86_64-linux-gnu/libc-2.27.so",
+      "value": "10",
+      "children": [
+        {
+          "name": "start_thread#/lib/x86_64-linux-gnu/libpthread-2.27.so",
+          "value": "10",
+          "children": [
+            {
+              "name": "#/usr/bin/clickhouse",
+              "value": "10",
+              "children": [
+                {
+                  "name": "ThreadPoolImpl<std::thread>::worker(std::_List_iterator<std::thread>)#/usr/bin/clickhouse",
+                  "value": "10",
+                  "children": [
+                    {
+                      "name": "ThreadFromGlobalPool::ThreadFromGlobalPool<ThreadPoolImpl<ThreadFromGlobalPool>::scheduleImpl<void>(std::function<void ()>, int, std::optional<unsigned long>)::{lambda()#3}>(ThreadPoolImpl<ThreadFromGlobalPool>::scheduleImpl<void>(std::function<void ()>, int, std::optional<unsigned long>)::{lambda()#3}&&)::{lambda()#1}::operator()() const#/usr/bin/clickhouse",
+                      "value": "10",
+                      "children": [
+                        {
+                          "name": "ThreadPoolImpl<ThreadFromGlobalPool>::worker(std::_List_iterator<ThreadFromGlobalPool>)#/usr/bin/clickhouse",
+                          "value": "10",
+                          "children": [
+                            {
+                              "name": "#/usr/bin/clickhouse",
+                              "value": "10",
+                              "children": [
+                                {
+                                  "name": "DB::AsynchronousBlockInputStream::calculate()#/usr/bin/clickhouse",
+                                  "value": "10",
+                                  "children": [
+                                    {
+                                      "name": "DB::IBlockInputStream::read()#/usr/bin/clickhouse",
+                                      "value": "10",
+                                      "children": [
+                                        {
+                                          "name": "DB::ExpressionBlockInputStream::readImpl()#/usr/bin/clickhouse",
+                                          "value": "10",
+                                          "children": [
+                                            {
+                                              "name": "DB::IBlockInputStream::read()#/usr/bin/clickhouse",
+                                              "value": "10",
+                                              "children": [
+                                                {
+                                                  "name": "DB::DistinctBlockInputStream::readImpl()#/usr/bin/clickhouse",
+                                                  "value": "10",
+                                                  "children": [
+                                                    {
+                                                      "name": "DB::IBlockInputStream::read()#/usr/bin/clickhouse",
+                                                      "value": "10",
+                                                      "children": [
+                                                        {
+                                                          "name": "DB::UnionBlockInputStream::readImpl()#/usr/bin/clickhouse",
+                                                          "value": "10",
+                                                          "children": [
+                                                            {
+                                                              "name": "Poco::Semaphore::wait()#/usr/bin/clickhouse",
+                                                              "value": "10",
+                                                              "children": [
+                                                                {
+                                                                  "name": "std::condition_variable::wait(std::unique_lock<std::mutex>&)#/usr/bin/clickhouse",
+                                                                  "value": "10",
+                                                                  "children": [
+                                                                    {
+                                                                      "name": "__pthread_cond_wait#/lib/x86_64-linux-gnu/libpthread-2.27.so",
+                                                                      "value": "10",
+                                                                      "children": []
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "name": "std::condition_variable::wait(std::unique_lock<std::mutex>&)#/usr/bin/clickhouse",
+                              "value": "1",
+                              "children": [
+                                {
+                                  "name": "__pthread_cond_wait#/lib/x86_64-linux-gnu/libpthread-2.27.so",
+                                  "value": "1",
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "name": "ThreadFromGlobalPool::ThreadFromGlobalPool<void (DB::ParallelInputsProcessor<DB::UnionBlockInputStream::Handler>::*)(std::shared_ptr<DB::ThreadGroupStatus>, unsigned long), DB::ParallelInputsProcessor<DB::UnionBlockInputStream::Handler>*, std::shared_ptr<DB::ThreadGroupStatus>, unsigned long&>(void (DB::ParallelInputsProcessor<DB::UnionBlockInputStream::Handler>::*&&)(std::shared_ptr<DB::ThreadGroupStatus>, unsigned long), DB::ParallelInputsProcessor<DB::UnionBlockInputStream::Handler>*&&, std::shared_ptr<DB::ThreadGroupStatus>&&, unsigned long&)::{lambda()#1}::operator()() const#/usr/bin/clickhouse",
+                      "value": "1",
+                      "children": [
+                        {
+                          "name": "DB::ParallelInputsProcessor<DB::UnionBlockInputStream::Handler>::thread(std::shared_ptr<DB::ThreadGroupStatus>, unsigned long)#/usr/bin/clickhouse",
+                          "value": "1",
+                          "children": [
+                            {
+                              "name": "DB::ParallelInputsProcessor<DB::UnionBlockInputStream::Handler>::loop(unsigned long)#/usr/bin/clickhouse",
+                              "value": "1",
+                              "children": [
+                                {
+                                  "name": "DB::IBlockInputStream::read()#/usr/bin/clickhouse",
+                                  "value": "1",
+                                  "children": [
+                                    {
+                                      "name": "DB::DistinctBlockInputStream::readImpl()#/usr/bin/clickhouse",
+                                      "value": "1",
+                                      "children": [
+                                        {
+                                          "name": "DB::IBlockInputStream::read()#/usr/bin/clickhouse",
+                                          "value": "1",
+                                          "children": [
+                                            {
+                                              "name": "DB::ExpressionBlockInputStream::readImpl()#/usr/bin/clickhouse",
+                                              "value": "1",
+                                              "children": [
+                                                {
+                                                  "name": "DB::IBlockInputStream::read()#/usr/bin/clickhouse",
+                                                  "value": "1",
+                                                  "children": [
+                                                    {
+                                                      "name": "DB::FilterBlockInputStream::readImpl()#/usr/bin/clickhouse",
+                                                      "value": "1",
+                                                      "children": [
+                                                        {
+                                                          "name": "DB::ExpressionActions::execute(DB::Block&, bool) const#/usr/bin/clickhouse",
+                                                          "value": "1",
+                                                          "children": [
+                                                            {
+                                                              "name": "DB::ExpressionAction::execute(DB::Block&, bool) const#/usr/bin/clickhouse",
+                                                              "value": "1",
+                                                              "children": [
+                                                                {
+                                                                  "name": "DB::PreparedFunctionImpl::execute(DB::Block&, std::vector<unsigned long, std::allocator<unsigned long> > const&, unsigned long, unsigned long, bool)#/usr/bin/clickhouse",
+                                                                  "value": "1",
+                                                                  "children": [
+                                                                    {
+                                                                      "name": "DB::FunctionTokens<DB::ExtractAllImpl>::executeImpl(DB::Block&, std::vector<unsigned long, std::allocator<unsigned long> > const&, unsigned long, unsigned long)#/usr/bin/clickhouse",
+                                                                      "value": "1",
+                                                                      "children": [
+                                                                        {
+                                                                          "name": "OptimizedRegularExpressionImpl<false>::match(char const*, unsigned long, std::vector<OptimizedRegularExpressionDetails::Match, std::allocator<OptimizedRegularExpressionDetails::Match> >&, unsigned int) const#/usr/bin/clickhouse",
+                                                                          "value": "1",
+                                                                          "children": [
+                                                                            {
+                                                                              "name": "re2_st::RE2::Match(re2_st::StringPiece const&, unsigned long, unsigned long, re2_st::RE2::Anchor, re2_st::StringPiece*, int) const#/usr/bin/clickhouse",
+                                                                              "value": "1",
+                                                                              "children": [
+                                                                                {
+                                                                                  "name": "re2_st::Prog::SearchDFA(re2_st::StringPiece const&, re2_st::StringPiece const&, re2_st::Prog::Anchor, re2_st::Prog::MatchKind, re2_st::StringPiece*, bool*, re2_st::SparseSetT<void>*)#/usr/bin/clickhouse",
+                                                                                  "value": "1",
+                                                                                  "children": [
+                                                                                    {
+                                                                                      "name": "#/usr/bin/clickhouse",
+                                                                                      "value": "1",
+                                                                                      "children": []
+                                                                                    }
+                                                                                  ]
+                                                                                }
+                                                                              ]
+                                                                            }
+                                                                          ]
+                                                                        }
+                                                                      ]
+                                                                    }
+                                                                  ]
+                                                                }
+                                                              ]
+                                                            }
+                                                          ]
+                                                        }
+                                                      ]
+                                                    }
+                                                  ]
+                                                }
+                                              ]
+                                            }
+                                          ]
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                },
+                                {
+                                  "name": "Poco::Semaphore::wait()#/usr/bin/clickhouse",
+                                  "value": "1",
+                                  "children": [
+                                    {
+                                      "name": "std::condition_variable::wait(std::unique_lock<std::mutex>&)#/usr/bin/clickhouse",
+                                      "value": "1",
+                                      "children": [
+                                        {
+                                          "name": "__pthread_cond_wait#/lib/x86_64-linux-gnu/libpthread-2.27.so",
+                                          "value": "1",
+                                          "children": []
+                                        }
+                                      ]
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "#/lib/x86_64-linux-gnu/libpthread-2.27.so",
+      "value": "22111",
+      "children": [
+        {
+          "name": "#/usr/bin/clickhouse",
+          "value": "22111",
+          "children": [
+            {
+              "name": "StackTrace::StackTrace(ucontext_t const&)#/usr/bin/clickhouse",
+              "value": "2",
+              "children": [
+                {
+                  "name": "unw_backtrace#/usr/bin/clickhouse",
+                  "value": "22111",
+                  "children": [
+                    {
+                      "name": "unw_step#/usr/bin/clickhouse",
+                      "value": "22111",
+                      "children": [
+                        {
+                          "name": "#/usr/bin/clickhouse",
+                          "value": "22111",
+                          "children": [
+                            {
+                              "name": "#/usr/bin/clickhouse",
+                              "value": "22111",
+                              "children": [
+                                {
+                                  "name": "#/usr/bin/clickhouse",
+                                  "value": "111",
+                                  "children": []
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "name": "DB::WriteBufferFromFileDescriptorDiscardOnFailure::nextImpl()#/usr/bin/clickhouse",
+              "value": "1",
+              "children": [
+                {
+                  "name": "write#/lib/x86_64-linux-gnu/libpthread-2.27.so",
+                  "value": "1",
+                  "children": []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DB::MergeTreeRangeReader::DelayedStream::finalize(DB::Block&)#/usr/bin/clickhouse",
+      "value": "1",
+      "children": []
+    }
+  ]
+}
